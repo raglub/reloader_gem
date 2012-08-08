@@ -1,6 +1,6 @@
 # ReloaderGem
 
-TODO: Write a gem description
+    Reload gem when we change content of gem.
 
 ## Installation
 
@@ -18,12 +18,8 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+    require "reloader_gem"
 
-## Contributing
+    ReloaderGem.new(name_of_gem)
 
-1. Fork it
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Added some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create new Pull Request
+where name_of_gem is name of gem which you want modify
