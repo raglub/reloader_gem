@@ -20,6 +20,14 @@ Or install it yourself as:
 
     require "reloader_gem"
 
+Reload gem name_of_gem
+
     ReloaderGem.new(name_of_gem)
 
-where name_of_gem is name of gem which you want modify
+If you know full path into gem
+
+    ReloaderGem.new(path_of_gem)
+
+Setting the frequency of checking Gemu (in seconds)
+
+    ReloaderGem.new(name_of_gem, 0.5)
