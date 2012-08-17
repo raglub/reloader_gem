@@ -6,7 +6,7 @@ Gem::Specification.new do |gem|
   gem.email         = ["raglub.ruby@gmail.com"]
   gem.description   = %q{Reload gem when we change content of gem}
   gem.summary       = %q{Reload gem when we change content of gem}
-  gem.date          = "2012-08-08"
+  gem.date          = "2012-08-17"
   gem.homepage      = "https://github.com/raglub/reloader_gem"
 
   gem.files         = `git ls-files`.split($\)

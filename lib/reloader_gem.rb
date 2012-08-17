@@ -6,10 +6,17 @@ require "logger"
 
 class ReloaderGem
 
-  def initialize(gem_name, time = 0.5)
+  def initialize(gem_name_path, time = 0.5)
     @logger = Logger.new(STDOUT)
-    @gem_name = gem_name
-    @gem_dir = Gem::Specification.find_by_name(@gem_name).gem_dir
+
+    if gem_name_path.split("/").last == gem_name_path
+      @gem_name = gem_name_path
+      @gem_path = Gem::Specification.find_by_name(@gem_name).gem_dir
+    else
+      @gem_name = gem_name_path.split("/").last
+      @gem_path = gem_name_path
+    end
+
     @check_sum = md5_gem
     @time = time
     run
@@ -22,13 +29,7 @@ private
       while true
         sleep @time
         begin
-          check_sum = md5_gem
-          unless check_sum == @check_sum
-            @check_sum = check_sum
-            $".delete_if{|item| item.include?(@gem_name)}
-            require @gem_name
-            @logger.info "----- updated gem #{@gem_name} -----"
-          end
+          require_gem if change_check_sum?
         rescue
           @logger.info "----- not updated gem #{@gem_name} -----"
         end
@@ -36,9 +37,22 @@ private
     end
   end
 
+  def require_gem
+    $".delete_if{|item| item.include?(@gem_name)}
+    require File.join(@gem_path, "lib", @gem_name)
+    @logger.info "----- updated gem #{@gem_name} -----"
+  end
+
+  def change_check_sum?
+    check_sum = md5_gem
+    return false if check_sum == @check_sum
+    @check_sum = check_sum
+    true
+  end
+
   def md5_gem
     result = ""
-    Dir["#{@gem_dir}/**/*.rb"].each do |path|
+    Dir["#{@gem_path}/**/*.rb"].each do |path|
       result << Digest::MD5.hexdigest(File.read(path))
     end
     result
