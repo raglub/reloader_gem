@@ -5,7 +5,6 @@ require "digest/md5"
 require "logger"
 
 class ReloaderGem
-
   def initialize(gem_name_path, time = 0.5)
     @logger = Logger.new(STDOUT)
 
@@ -19,23 +18,32 @@ class ReloaderGem
 
     @check_sum = md5_gem
     @time = time
-    run
+    @load_files =[]
   end
-
-private
 
   def run
     Thread.new do
       while true
         sleep @time
         begin
-          require_gem if change_check_sum?
+          if change_check_sum?
+            require_gem
+            @load_files.each do |path|
+              load path
+            end
+          end
         rescue
           @logger.info "----- not updated gem #{@gem_name} -----"
         end
       end
     end
   end
+
+  def load_file(path)
+    @load_files << path
+    self
+  end
+private
 
   def require_gem
     $".delete_if{|item| item.include?(@gem_name)}
