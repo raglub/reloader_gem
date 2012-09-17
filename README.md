@@ -22,12 +22,16 @@ Or install it yourself as:
 
 Reload gem name_of_gem
 
-    ReloaderGem.new(name_of_gem)
+    ReloaderGem.new(name_of_gem).listen
 
 If you know full path into gem
 
-    ReloaderGem.new(path_of_gem)
+    ReloaderGem.new(path_of_gem).listen
 
 Setting the frequency of checking Gemu (in seconds)
 
-    ReloaderGem.new(name_of_gem, 0.5)
+    ReloaderGem.new(name_of_gem, 0.5).listen
+
+Load the files defined in gem but not 'require'
+
+    ReloaderGem.new(path_of_gem, 0.1).load("lib/reloader_gem_spec/*.rb").listen
